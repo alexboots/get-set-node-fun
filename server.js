@@ -15,19 +15,30 @@ const http = require('http');
 const server = http.createServer().listen(4000, '127.0.0.1');
 
 // Constants
-const GET = 'GET'
+const GET = 'get'
+const SET = 'set'
 const STATUS_CODE_200 = 200
 const STATUS_CODE_404 = 404
+
+// Save in memory
+let arrayOfKeyValues = []
 
 
 server.on('request', (request, response) => {
 
-  const { url } = request;
+  const { url, method } = request;
 
-  url
-  
-  set?somekey=somevalue
-  if() {
+  // Get info we need
+  const methodType = url.substr(1, 3);
+  const keyValuePairing = url.match(/[^\?]\w+=\w+/g)
+  const keyValueSplit = keyValuePairing[0].split('=')
+
+  let keyValueJson = {}
+  keyValueJson[keyValueSplit[0]] = keyValueSplit[1]
+  keyValueJson = JSON.stringify(keyValueJson)
+
+
+  if(request.method === GET) {
     let body = []
     request
       .on('error', (error) => {
@@ -38,20 +49,24 @@ server.on('request', (request, response) => {
       })
       .on('end', () => {
         body = Buffer.concat(body).toString();
-
-
-
-        console.log('url', url.);
         
         response.on('error', (error) => { console.error('Error responding to your requesty', error); })
 
         response.statusCode = STATUS_CODE_200;
         response.setHeader('Content-Type', 'application/json');
 
-        const responseBody = {  url, body };
+
+        if(methodType === GET) {
+          response.write('You are looking up X')
+          // response.write(JSON.stringify(responseBody));
+  
+        } else if(methodType === SET) {
+          arrayOfKeyValues.push(keyValueJson)
+          response.write('Such and such has been set! Here is the full thingy')
+          // response.write(JSON.stringify(responseBody));
+        }
 
         // Stuff
-        response.write(JSON.stringify(responseBody));
         response.end();
       })
 
