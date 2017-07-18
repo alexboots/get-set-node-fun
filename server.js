@@ -1,4 +1,4 @@
-/*
+/* 
 
 Database server
 
@@ -26,7 +26,7 @@ let arrayOfKeyValues = []
 
 server.on('request', (request, response) => {
 
-  const { url, method } = request;
+  const { url } = request;
 
   // Get info we need
   const methodType = url.substr(1, 3);
@@ -37,41 +37,35 @@ server.on('request', (request, response) => {
   keyValueJson[keyValueSplit[0]] = keyValueSplit[1]
   keyValueJson = JSON.stringify(keyValueJson)
 
+  let body = []
+  request
+    .on('error', (error) => {
+      console.log('Oh no! Something went wrong!', error.stack);
+    })
+    .on('data', (chunk) => {
+      body.push(chunk);
+    })
+    .on('end', () => {
+      body = Buffer.concat(body).toString();
+      
+      response.on('error', (error) => { console.error('Error responding to your requesty', error); })
 
-  if(request.method === GET) {
-    let body = []
-    request
-      .on('error', (error) => {
-        console.log('Oh no! Something went wrong!', error.stack);
-      })
-      .on('data', (chunk) => {
-        body.push(chunk);
-      })
-      .on('end', () => {
-        body = Buffer.concat(body).toString();
-        
-        response.on('error', (error) => { console.error('Error responding to your requesty', error); })
+      response.statusCode = STATUS_CODE_200;
+      response.setHeader('Content-Type', 'application/json');
 
-        response.statusCode = STATUS_CODE_200;
-        response.setHeader('Content-Type', 'application/json');
+      if(methodType === GET) {
+        response.write('You are looking up X')
+        // response.write(JSON.stringify(responseBody));
 
+      } else if(methodType === SET) {
+        arrayOfKeyValues.push(keyValueJson)
+        response.write(`Saving new entry: ${keyValueJson}\n\n`)
+        response.write(`The database has been updated to include this new entry:\n ${arrayOfKeyValues}`)
+        // response.write(JSON.stringify(responseBody));
+      }
 
-        if(methodType === GET) {
-          response.write('You are looking up X')
-          // response.write(JSON.stringify(responseBody));
-  
-        } else if(methodType === SET) {
-          arrayOfKeyValues.push(keyValueJson)
-          response.write('Such and such has been set! Here is the full thingy')
-          // response.write(JSON.stringify(responseBody));
-        }
-
-        // Stuff
-        response.end();
-      })
-
-    } else {
-      response.statusCode = STATUS_CODE_404
+      response.write("</div>")
       response.end();
-    }
+    })
+
 });
