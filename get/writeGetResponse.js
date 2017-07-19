@@ -1,5 +1,4 @@
 module.exports = (response, key, arrayOfKeyValues) => {
-
   if(arrayOfKeyValues.length === 0) {
     response.write(`There are currently no entries in the database.`);
   } else {

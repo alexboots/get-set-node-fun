@@ -1,5 +1,4 @@
 module.exports = (url) => {
-
   const keyValuePairing = url.match(/(\w*=\w*)/g);
   const keyValueSplit = keyValuePairing[0].split('=');
   
