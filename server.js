@@ -34,17 +34,12 @@ server.on('request', (request, response) => {
   const { url } = request;
   const methodType = url.substr(1, 3);
 
-  let body = []
   request
     .on('error', (error) => {
       console.log('Oh no! Something went wrong!', error.stack);
     })
-    .on('data', (chunk) => {
-      body.push(chunk);
-    })
+    .on('data', (chunk) => {})
     .on('end', () => {
-      body = Buffer.concat(body).toString();
-      
       configureResponse.startOfSuccessResponse(response);
 
       if(methodType === consts.SET) { 
