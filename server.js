@@ -45,7 +45,7 @@ server.on('request', (request, response) => {
     .on('end', () => {
       body = Buffer.concat(body).toString();
       
-      configureResponse.startOfResponse(response)
+      configureResponse.startOfSuccessResponse(response)
 
       if(methodType === consts.SET) { 
 

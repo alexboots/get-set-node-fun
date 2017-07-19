@@ -1,7 +1,7 @@
 // Consts
 const consts = require('./constants.js');
 
-exports.startOfResponse = (response) => {
+exports.startOfSuccessResponse = (response) => {
   response.statusCode = consts.STATUS_CODE_200;
   response.setHeader('Content-Type', 'text/html');
   response.write("<div style='font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;'>");
