@@ -1,7 +1,7 @@
 module.exports = (response, key, arrayOfKeyValues) => {
 
   if(arrayOfKeyValues.length === 0) {
-    response.write(`There are currently no entries in the database.`)
+    response.write(`There are currently no entries in the database.`);
   } else {
 
     let count = 0;
@@ -9,10 +9,10 @@ module.exports = (response, key, arrayOfKeyValues) => {
     let foundValues = [];
 
     arrayOfKeyValues.some((keyValuePair) => { 
-      keyValuePairParsed = JSON.parse(keyValuePair)
+      keyValuePairParsed = JSON.parse(keyValuePair);
 
       if(Object.keys(keyValuePairParsed)[0] === key) {
-        foundValues.push(keyValuePairParsed)
+        foundValues.push(keyValuePairParsed);
         count++;
       }
     });
@@ -23,7 +23,7 @@ module.exports = (response, key, arrayOfKeyValues) => {
       response.write(`There are ${count} values associated with the key "${key}". <br />`);
       response.write(`Those values are: ${JSON.stringify(foundValues)}.`);
     } else {
-      response.write(`There are no entries associated with that key.`)
+      response.write(`There are no entries associated with that key.`);
     }
   }
 

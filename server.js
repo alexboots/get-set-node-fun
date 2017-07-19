@@ -18,11 +18,11 @@ const configureResponse = require('./configureResponse');
 
 // get 
 const getKey = require('./get/getKey.js');
-const writeGetResponse = require('./get/writeGetResponse.js')
+const writeGetResponse = require('./get/writeGetResponse.js');
 
 // set
 const getKeyValuePair = require('./set/getKeyValuePair.js');
-const writeSetResponse = require('./set/writeSetResponse.js')
+const writeSetResponse = require('./set/writeSetResponse.js');
 
 // Consts
 const consts = require('./constants.js');
@@ -45,7 +45,7 @@ server.on('request', (request, response) => {
     .on('end', () => {
       body = Buffer.concat(body).toString();
       
-      configureResponse.startOfSuccessResponse(response)
+      configureResponse.startOfSuccessResponse(response);
 
       if(methodType === consts.SET) { 
 
