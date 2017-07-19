@@ -11,6 +11,8 @@ You can start with simply appending each write to the file, and work on making i
 
 */
 
+// regex notes: https://github.com/alexboots/regex-notes
+
 const http = require('http');
 const server = http.createServer().listen(4000, '127.0.0.1');
 
