@@ -14,28 +14,16 @@ You can start with simply appending each write to the file, and work on making i
 const http = require('http');
 const server = http.createServer().listen(4000, '127.0.0.1');
 
-// Constants
-const GET = 'get'
-const SET = 'set'
-const STATUS_CODE_200 = 200
-const STATUS_CODE_404 = 404
-
-// Save in memory
-let arrayOfKeyValues = []
-
+// Methods
+const parseUrl = require('./parseUrl.js');
+const setupResponse = require('./setupResponse.js');
 
 server.on('request', (request, response) => {
 
   const { url } = request;
-
-  // Get info we need
   const methodType = url.substr(1, 3);
-  const keyValuePairing = url.match(/[^\?]\w+=\w+/g)
-  const keyValueSplit = keyValuePairing[0].split('=')
-
-  let keyValueJson = {}
-  keyValueJson[keyValueSplit[0]] = keyValueSplit[1]
-  keyValueJson = JSON.stringify(keyValueJson)
+  const keyValueJson = parseUrl(url);
+  
 
   let body = []
   request
@@ -50,21 +38,8 @@ server.on('request', (request, response) => {
       
       response.on('error', (error) => { console.error('Error responding to your requesty', error); })
 
-      response.statusCode = STATUS_CODE_200;
-      response.setHeader('Content-Type', 'application/json');
-
-      if(methodType === GET) {
-        response.write('You are looking up X')
-        // response.write(JSON.stringify(responseBody));
-
-      } else if(methodType === SET) {
-        arrayOfKeyValues.push(keyValueJson)
-        response.write(`Saving new entry: ${keyValueJson}\n\n`)
-        response.write(`The database has been updated to include this new entry:\n ${arrayOfKeyValues}`)
-        // response.write(JSON.stringify(responseBody));
-      }
-
-      response.write("</div>")
+      setupResponse(response, methodType, keyValueJson)
+    
       response.end();
     })
 
