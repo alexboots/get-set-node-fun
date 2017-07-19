@@ -18,7 +18,7 @@ module.exports = (response, key, arrayOfKeyValues) => {
     });
 
     if(foundValues.length === 1) {
-      response.write(`The value associated with that key ${key} is ${JSON.stringify(foundValues[0])}`);
+      response.write(`The value associated with that key \"${key}\" is ${JSON.stringify(foundValues[0][key])}`);
     } else if(count > 1) {
       response.write(`There are ${count} values associated with the key "${key}". <br />`);
       response.write(`Those values are: ${JSON.stringify(foundValues)}.`);
